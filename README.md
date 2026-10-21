@@ -35,4 +35,4 @@ An alarm is raised only when the value is above the limit.
 | 04 | Send readings to the central service      | #5    |
 | 05 | Receive readings from sensors             | #6    |
 | 06 | Connect warehouses and central service    | #7    |
-| 07 | Run everything together                   | #8    |
+| 07 | Testing and prove all                   | #8    |
