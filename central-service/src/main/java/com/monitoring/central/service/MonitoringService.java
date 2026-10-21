@@ -37,12 +37,8 @@ public class MonitoringService {
 
     private static void logAlarm(Alarm alarm) {
         Measurement measurement = alarm.measurement();
-        String unit = measurement.type().unit();
         LOG.warn("{}", LogMessage.of(LogEvent.ALARM)
-                .with("warehouse_id", measurement.warehouseId())
-                .with("sensor_id", measurement.sensorId())
-                .with("type", measurement.type())
-                .with("value", measurement.value() + unit)
-                .with("threshold", alarm.threshold().value() + unit));
+                .withMeasurement(measurement)
+                .with("threshold", alarm.threshold().value() + measurement.type().unit()));
     }
 }
