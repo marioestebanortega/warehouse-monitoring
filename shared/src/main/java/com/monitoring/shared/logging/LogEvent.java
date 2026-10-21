@@ -1,5 +1,6 @@
 package com.monitoring.shared.logging;
 
 public enum LogEvent {
-    ALARM
+    ALARM,
+    MEASUREMENT_PUBLISHED
 }

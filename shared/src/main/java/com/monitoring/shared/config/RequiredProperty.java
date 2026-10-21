@@ -20,7 +20,7 @@ public final class RequiredProperty {
         }
     }
 
-    private static String text(String name, String value) {
+    public static String text(String name, String value) {
         if (value == null || value.isBlank()) {
             throw new ConfigurationException("Missing property '" + name + "'");
         }
