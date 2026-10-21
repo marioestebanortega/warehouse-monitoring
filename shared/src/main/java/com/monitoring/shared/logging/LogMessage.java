@@ -18,8 +18,16 @@ public final class LogMessage {
     }
 
     public LogMessage with(String key, Object value) {
-        fields.add(key + "=" + value);
+        fields.add(key + "=" + escapeLineBreaks(String.valueOf(value)));
         return this;
+    }
+
+    public LogMessage withInput(String input) {
+        return with("input", "\"" + input + "\"");
+    }
+
+    public LogMessage withException(Exception exception) {
+        return with("reason", exception.getMessage()).with("exception", exception.getClass().getName());
     }
 
     public LogMessage withMeasurement(Measurement measurement) {
@@ -32,5 +40,9 @@ public final class LogMessage {
     @Override
     public String toString() {
         return event + " | " + fields;
+    }
+
+    private static String escapeLineBreaks(String text) {
+        return text.replace("\r", "\\r").replace("\n", "\\n");
     }
 }

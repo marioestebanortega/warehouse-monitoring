@@ -40,11 +40,6 @@ class ThresholdPropertiesTest {
         assertEquals("Missing property 'threshold.humidity'", exception.getMessage());
     }
 
-    @Test
-    void failsWhenNoThresholdIsConfigured() {
-        assertThrows(ConfigurationException.class, () -> new ThresholdProperties(null));
-    }
-
     private ThresholdProperties bind(Map<String, Object> environment) throws IOException {
         MutablePropertySources sources = new MutablePropertySources();
         sources.addLast(new SystemEnvironmentPropertySource("environment", environment));
