@@ -1,0 +1,7 @@
+.git
+**/target
+*.pdf
+*.pptx
+*.txt
+*.md
+.env

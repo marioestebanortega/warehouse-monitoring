@@ -1,3 +1,18 @@
+x-broker-environment: &broker-environment
+  SPRING_RABBITMQ_HOST: rabbitmq
+  RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:?}
+  RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:?}
+
+x-warehouse: &warehouse
+  build:
+    context: .
+    args:
+      MODULE: warehouse-service
+  image: warehouse-monitoring/warehouse-service
+  depends_on:
+    rabbitmq:
+      condition: service_healthy
+
 services:
   rabbitmq:
     image: rabbitmq:4.1-alpine
@@ -5,7 +20,36 @@ services:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME:?}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:?}
     healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "check_port_connectivity"]
       interval: 5s
       timeout: 5s
       retries: 30
+
+  central:
+    build:
+      context: .
+      args:
+        MODULE: central-service
+    image: warehouse-monitoring/central-service
+    environment: *broker-environment
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  warehouse-1:
+    <<: *warehouse
+    environment:
+      <<: *broker-environment
+      WAREHOUSE_ID: warehouse-1
+    ports:
+      - "3344:3344/udp"
+      - "3355:3355/udp"
+
+  warehouse-2:
+    <<: *warehouse
+    environment:
+      <<: *broker-environment
+      WAREHOUSE_ID: warehouse-2
+    ports:
+      - "4344:3344/udp"
+      - "4355:3355/udp"
