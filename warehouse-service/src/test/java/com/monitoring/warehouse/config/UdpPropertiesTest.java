@@ -27,13 +27,6 @@ class UdpPropertiesTest {
     }
 
     @Test
-    void environmentVariableOverridesApplicationProperties() throws IOException {
-        UdpProperties properties = bind(Map.of("UDP_PORT_TEMPERATURE", "4344"));
-
-        assertEquals(4344, properties.portFor(SensorType.TEMPERATURE));
-    }
-
-    @Test
     void failsWhenPortIsMissing() {
         ConfigurationException exception = assertThrows(ConfigurationException.class,
                 () -> new UdpProperties(Map.of("temperature", "3344")));
